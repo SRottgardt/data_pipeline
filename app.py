@@ -32,11 +32,10 @@ class HandleData(MethodView):
                 if validateResult is not None:
                     return validateResult
                  
-
                 _commandData = CommandData(response["items"], columnDataRowOption, columnDataRow["optionValue"],columnDataRow["targetColumn"], columnDataRow["destinationColumn"])
 
                 for plugin in _plugins.getLoadedPlugins():
-                    # Check for known plugin Command
+                    # Check for known plugin commands
                     if columnDataRowOption in _plugins.getPluginsCommands():
                         # Match for plugin execution
                         if (plugin.pluginCommand == columnDataRowOption):
