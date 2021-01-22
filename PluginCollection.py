@@ -38,11 +38,11 @@ class PluginCollection(object):
         
     def searchPlugins(self, package):
         """Plugin search Method - """
-        imported_package = __import__(package, fromlist=["blah"])
+        imported_package = __import__(package, fromlist=[""])
 
         for _, pluginname, ispkg in pkgutil.iter_modules(imported_package.__path__, imported_package.__name__ + "."):
             if not ispkg:
-                plugin_module = __import__(pluginname, fromlist=["blah"])
+                plugin_module = __import__(pluginname, fromlist=[""])
                 clsmembers = inspect.getmembers(plugin_module, inspect.isclass)
                 for (_, c) in clsmembers:
                     # Only add classes that are a sub class of Plugin, but NOT Plugin itself
