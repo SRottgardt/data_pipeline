@@ -1,3 +1,4 @@
+from ProjectSettings import Settings
 from flask import Flask, json, jsonify, request
 from flask.views import MethodView
 from Worker import Worker
@@ -9,10 +10,10 @@ app = Flask(__name__)
 _plugins = PluginCollection('modules')
 _worker = Worker()
 
+
 class HandleData(MethodView):
     methods = ['POST']
-    _commandData = None
-
+    
     def post(self):
         response = request.get_json()
         if (response is not None):
@@ -94,4 +95,5 @@ def handle_exception(e):
     return response
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=8080, debug=False)
+    localsettings = Settings()
+    app.run(host=localsettings.HOST, port=localsettings.PORT, debug=localsettings.DEBUG)

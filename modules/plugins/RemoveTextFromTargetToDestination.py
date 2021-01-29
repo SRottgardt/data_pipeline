@@ -18,7 +18,12 @@ class RemoveTextFromTargetToDestination(IPlugin):
         message = []
 
         for rowsData in self.commandData.getItems():
-            rowsData[self.commandData.getDestinationColumn()] = rowsData[self.commandData.getTargetColumn()].replace(self.commandData.getOptionsValue(), '')
+
+            # check targetColumn exists
+            if self.commandData.getTargetColumn() in rowsData:
+                rowsData[self.commandData.getDestinationColumn()] = rowsData[self.commandData.getTargetColumn()].replace(self.commandData.getOptionsValue(), '')
+            else:
+                rowsData[self.commandData.getTargetColumn()] = "targetColumn not exists"
             message.append(rowsData)
                 
         if message is not None:

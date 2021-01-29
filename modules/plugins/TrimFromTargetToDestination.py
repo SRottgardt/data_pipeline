@@ -18,7 +18,12 @@ class TrimFromTargetToDestination(IPlugin):
         message = []
 
         for rowsData in self.commandData.getItems():
-            rowsData[self.commandData.getDestinationColumn()] = rowsData[self.commandData.getTargetColumn()].strip()
+            # check targetColumn exists
+            if self.commandData.getTargetColumn() in rowsData:
+
+                rowsData[self.commandData.getDestinationColumn()] = rowsData[self.commandData.getTargetColumn()].strip()
+            else:
+                rowsData[self.commandData.getTargetColumn()] = "targetColumn not exists"
             message.append(rowsData)
 
         if message is not None:

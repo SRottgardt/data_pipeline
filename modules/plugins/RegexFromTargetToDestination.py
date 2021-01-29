@@ -18,12 +18,19 @@ class RegexFromTargetToDestination(IPlugin):
     def execute(self):
         message = []
         for rowsData in self.commandData.getItems():
-            result = re.search(self.commandData.getOptionsValue(), rowsData[self.commandData.getTargetColumn()])
-            if(result):
-                result = result.group(1)
+
+            # check targetColumn exists
+            if self.commandData.getTargetColumn() in rowsData:
+
+                result = re.search(self.commandData.getOptionsValue(), rowsData[self.commandData.getTargetColumn()])
+                if(result):
+                    result = result.group(1)
+                else:
+                    result = ''
+                rowsData[self.commandData.getDestinationColumn()] = result
             else:
-                result = ''
-            rowsData[self.commandData.getDestinationColumn()] = result
+                rowsData[self.commandData.getTargetColumn()] = "targetColumn not exists"
+            
             message.append(rowsData)
 
         if message is not None:
