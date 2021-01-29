@@ -24,6 +24,7 @@ class RemoveTextFromTargetToDestination(IPlugin):
                 rowsData[self.commandData.getDestinationColumn()] = rowsData[self.commandData.getTargetColumn()].replace(self.commandData.getOptionsValue(), '')
             else:
                 rowsData[self.commandData.getTargetColumn()] = "targetColumn not exists"
+                
             message.append(rowsData)
                 
         if message is not None:

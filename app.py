@@ -16,6 +16,7 @@ class HandleData(MethodView):
     
     def post(self):
         response = request.get_json()
+
         if (response is not None):
 
             # Check for items
@@ -33,19 +34,24 @@ class HandleData(MethodView):
                 if validateResult is not None:
                     return validateResult
                  
-                _commandData = CommandData(response["items"], columnDataRowOption, columnDataRow["optionValue"],columnDataRow["targetColumn"], columnDataRow["destinationColumn"])
+                _commandData = CommandData(
+                    response["items"], # json items
+                    columnDataRowOption, # columnData -> option
+                    columnDataRow["optionValue"], # columnData -> optionValue
+                    columnDataRow["targetColumn"], # columnData -> targetColumn
+                    columnDataRow["destinationColumn"]) # columnData -> destinationColumn
 
                 for plugin in _plugins.getLoadedPlugins():
-                    # Check for known plugin commands
+                    # Check for known plugin command in all loaded plugins
                     if columnDataRowOption in _plugins.getPluginsCommands():
-                        # Match for plugin execution
+                        # Match the plugincommand with the plugin 
                         if (plugin.pluginCommand == columnDataRowOption):
                             # set data
                             plugin.setData(_commandData)
                             # add worker
                             _worker.addJob(plugin)
                     else:
-                        # Unknown Command
+                        # no plugin command found -> add a unknown command job
                         unknownHandler = _plugins.getPluginByCommand("unknown")
                         unknownHandler.setData(_commandData)
                         _worker.addJob(unknownHandler)
@@ -61,19 +67,29 @@ class HandleData(MethodView):
             message = {"error": "Request is empty"}
             return message
 
-    def validateColumnDataStructure(self, row):
+    def validateColumnDataStructure(self, row: str) -> str:
+        """
+        Args:
+            row (str): contains the json row with data
+
+        Returns:
+            str: returns a exception message or none
+        """
         #check for optionValue
         if "optionValue" not in row:
             message = {"error": "json columnData not contains optionValue"}
             return message
+
         # check for targetColumn
         if "targetColumn" not in row:
             message = {"error": "json columnData not contains targetColumn"}
             return message
+
         # check for destinationColumn
         if "destinationColumn" not in row:
             message = {"error": "json columnData not contains destinationColumn"}
             return message
+
         # check for option
         if "option" not in row:
             message = {"error": "json columnData not contains option"}
