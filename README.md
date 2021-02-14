@@ -17,12 +17,15 @@ LOG_TYPE=FILE #NONE|FILE
 LOG_SAVEBODY=TRUE #TRUE|FALSE
 DEBUG=TRUE #TRUE|FALSE
 ```
-
-3) Start the Flask Application
+3) Install Dependencys in requirements.txt
 ```python
-python app.py  
+pip install -r requirements.txt 
 ```
-4) Manipulate Data
+4) Start the Flask Application
+```python
+python start.py  
+```
+5) Manipulate Data
 
 ## Modules
 
@@ -40,7 +43,7 @@ The structure of ColumnData must remain, the field option, optionValue, targetCo
 The items array contains the data sets for data processing.
 
 ```
-Send a JSON Request(POST) to the Flask Application
+Send a JSON Request(POST) to the Flask Application Example:  http://127.0.0.1:8080/pipe/
 Example:
       {
         "columnData": [

@@ -7,16 +7,19 @@ from modules.IPlugin import IPlugin
 
 class PluginCollection(object):
 
-    def __init__(self, plugin_package):
+    
+    def __init__(self, plugin_package, logger):
         self.plugin_package = plugin_package
+        self.logger = logger
         self.loading_plugins()
+      
 
     def loading_plugins(self):
         """Loading all Plugins"""
         self.loadedPlugins = []
         self.searchedPaths = []
-        print()
-        print("Searching Plugins")
+        self.logger.debug("")
+        self.logger.debug("Searching Plugins")
         self.searchPlugins(self.plugin_package)
 
     def getLoadedPlugins(self):
@@ -47,7 +50,7 @@ class PluginCollection(object):
                 for (_, c) in clsmembers:
                     # Only add classes that are a sub class of Plugin, but NOT Plugin itself
                     if issubclass(c, IPlugin) & (c is not IPlugin):
-                        print("    Found plugin: %s" % (c.__name__))
+                        self.logger.debug("    Found plugin: %s" % (c.__name__))
                         self.loadedPlugins.append(c())
 
         all_current_paths = []

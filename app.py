@@ -5,17 +5,34 @@ from Worker import Worker
 from PluginCollection import PluginCollection
 from modules.CommandData import CommandData
 from werkzeug.exceptions import HTTPException
+import logging
 
 app = Flask(__name__)
-_plugins = PluginCollection('modules')
-_worker = Worker()
 
+_worker = Worker()
+_localsettings = Settings()
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format=_localsettings.LOG_FORMAT,
+    handlers=[
+        logging.FileHandler(_localsettings.LOG_FILE_PATH)
+    ]
+)
+
+_logger = logging.getLogger("data_pipeline")
+
+_plugins = PluginCollection('modules', _logger)
 
 class HandleData(MethodView):
     methods = ['POST']
     
     def post(self):
         response = request.get_json()
+        
+        # Save incoming JSON
+        if _localsettings.LOG_SAVEBODY:
+            _logger.info(response)
 
         if (response is not None):
 
@@ -96,8 +113,6 @@ class HandleData(MethodView):
             return message
 
 
-app.add_url_rule('/pipe/', view_func=HandleData.as_view('handledata'))
-
 
 @app.errorhandler(HTTPException)
 def handle_exception(e):
@@ -110,6 +125,8 @@ def handle_exception(e):
     response.content_type = "application/json"
     return response
 
-if __name__ == '__main__':
-    localsettings = Settings()
-    app.run(host=localsettings.HOST, port=localsettings.PORT, debug=localsettings.DEBUG)
+
+
+app.add_url_rule('/pipe/', view_func=HandleData.as_view('handledata'))
+
+
