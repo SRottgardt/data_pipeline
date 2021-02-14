@@ -43,7 +43,7 @@ class HandleData(MethodView):
 
             for idx, columnDataRow in enumerate(response["columnData"]):
                 columnDataRowOption = columnDataRow["option"]
-                print("Loading working row: {0} with method: {1}".format(idx, columnDataRowOption))
+                _logger.debug("Loading working row: {0} with method: {1}".format(idx, columnDataRowOption))
 
                 # validate structure of json
                 validateResult = self.validateColumnDataStructure(columnDataRow) 

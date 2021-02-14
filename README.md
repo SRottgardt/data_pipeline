@@ -1,7 +1,7 @@
 # data_pipeline
 
 data_pipeline is a Python library for dealing with datasets.
-
+Another example to show the functionality of the data pipeline is the following, you can first clean the data using a regex then remove an unnecessary space. Additionally you can check if a certain value was found, once such a value was found further actions can be executed.
 
 ## Installation
 
@@ -36,6 +36,41 @@ python start.py
 data_pipeline is easy to extend, all functionalities are divided into modules.
 
 The plugin system makes it very easy to add functionalities needed for editing data.
+
+If you want to develop a plugin, the structure for a plugin is as follows:
+
+Create a new File in modules/plugins with the name of your Plugin
+
+Add this skeleton class to your file
+
+```python
+from modules.IPlugin  import IPlugin
+
+class NewPlugin(IPlugin):
+
+    def __init__(self):
+        super().__init__()
+        self.pluginName = "Your Plugin Name"
+        self.pluginAutor = "Your Name"
+        self.pluginVersion = 0.1
+        self.pluginDescription = "Your Description"
+        self.pluginCommand = "your acronym"
+        
+    def preExecute(self):
+        # do your stuff, open connections, read files
+        self.execute()
+
+    def execute(self):
+        for rowsData in self.commandData.getItems():
+        # do your stuff
+        
+    def postExecute(self):
+        # do your stuff, close connection, close file
+        pass
+
+```    
+
+
 
 
 ## Usage
