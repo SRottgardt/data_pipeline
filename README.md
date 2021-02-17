@@ -27,7 +27,7 @@ pip install -r requirements.txt
 ```
 4) Start the Flask Application
 ```python
-python start.py  
+python Start.py  
 ```
 5) Manipulate Data
 
@@ -46,7 +46,7 @@ Add this skeleton class to your file
 ```python
 from modules.IPlugin  import IPlugin
 
-class NewPlugin(IPlugin):
+class NewPlugin(IPlugin): # Rename your Class
 
     def __init__(self):
         super().__init__()
@@ -122,4 +122,13 @@ Response:
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
+## Todo
+* Dashboard
+* Logging
+* Different actions for certain events
+
 ## License
+
+data_pipeline is distributed under Apache 2.0 with Commons Clause license.
+
+
